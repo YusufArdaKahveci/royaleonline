@@ -21,7 +21,6 @@
             flex-direction: column;
         }
 
-        /* Arka Plan */
         .hero-background {
             position: fixed;
             top: 0;
@@ -33,7 +32,6 @@
             z-index: -1;
         }
 
-        /* Header / Üst Menü */
         header {
             display: flex;
             justify-content: space-between;
@@ -59,4 +57,53 @@
         }
 
         .logo-container img {
-            height:
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ip-box {
+            background: #ff4757;
+            color: #fff;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
