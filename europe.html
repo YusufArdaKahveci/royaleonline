@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoyaleOnline - Europe Mağazası</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0b0c10; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        .hero-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(11, 12, 16, 0.5), rgba(11, 12, 16, 0.98)), 
+                        url('https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=1920') no-repeat center center/cover;
+            z-index: -1;
+        }
+        header {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 40px;
+            background: rgba(15, 15, 20, 0.85); backdrop-filter: blur(12px); position: fixed; top: 0; width: 100%; z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 800; text-decoration: none; color: white; }
+        .logo-container img { height: 36px; width: auto; object-fit: contain; }
+        .nav-links { display: flex; gap: 10px; list-style: none; }
+        .nav-links a {
+            color: #ccc; text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 14px; border-radius: 6px;
+            transition: 0.3s; display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.03);
+        }
+        .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255, 255, 255, 0.1); }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .ip-box {
+            background: #ff4757; color: #fff; padding: 9px 18px; border-radius: 8px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 13px; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+        .user-btn { background: #3742fa; color: white; border: none; padding: 9px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+
+        /* Sayfa İçeriği */
+        .content { max-width: 1100px; margin: 120px auto 60px auto; padding: 0 20px; flex: 1; width: 100%; }
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .sub-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #ff4757; font-weight: bold; margin-bottom: 4px; }
+        .main-title { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 1px; margin-bottom: 8px; }
+        .desc { font-size: 13px; color: #aaa; margin-bottom: 12px; }
+        .breadcrumb { font-size: 12px; color: #888; }
+        .breadcrumb a { color: #ff4757; text-decoration: none; }
+
+        /* Üst Araç Çubuğu (Arama ve Sunucu Seçimi) */
+        .toolbar {
+            background: rgba(18, 19, 26, 0.9); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px;
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .server-badge { background: #2ed573; color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        .search-box { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 12px; gap: 8px; color: #777; font-size: 13px; }
+        .search-box input { background: transparent; border: none; color: white; outline: none; font-size: 13px; width: 180px; }
+        .login-prompt { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #bbb; }
+        .login-btn { background: #ffd32a; color: #111; border: none; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px; }
+
+        /* Sekmeler (Tabs) */
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 5px; }
+        .tab {
+            background: rgba(18, 19, 26, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 18px; border-radius: 8px;
+            color: #ccc; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; text-decoration: none;
+        }
+        .tab.active, .tab:hover { background: #ffd32a; color: #111; border-color: #ffd32a; }
+
+        /* Kategori Başlığı */
+        .section-box { background: rgba(18, 19, 26, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+        .section-title { font-size: 15px; font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; color: #fff; }
+        .section-title i { color: #ff4757; }
+
+        /* Tablo / Karşılaştırma Alanı */
+        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; text-align: center; }
+        .comparison-table th, .comparison-table td { padding: 12px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .comparison-table th { background: rgba(15, 15, 20, 0.9); color: #ffd32a; font-weight: 700; }
+        .comparison-table td:first-child { text-align: left; font-weight: 600; color: #ddd; }
+        .comparison-table tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+        @media (max-width: 768px) {
+            .toolbar { flex-direction: column; gap: 15px; align-items: stretch; }
+            .comparison-table { font-size: 11px; }
+        }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: #2ed573; color: white; padding: 12px 24px; border-radius: 8px; font-weight: bold; display: none; z-index: 1000; }
+    </style>
+</head>
+<body>
+    <div class="hero-background"></div>
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="logo.png" alt="Logo">
+            <span>Royale<span style="color: #ffd32a;">Online</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> Anasayfa</a></li>
+            <li><a href="magaza.html" class="active"><i class="fa-solid fa-cart-shopping"></i> Mağaza</a></li>
+            <li><a href="#"><i class="fa-solid fa-wallet"></i> Kredi Yükle</a></li>
+            <li><a href="#"><i class="fa-solid fa-headset"></i> Destek</a></li>
+            <li><a href="#"><i class="fa-solid fa-book"></i> Wiki</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="ip-box" onclick="copyIP()"><i class="fa-solid fa-signal"></i><span>PLAY.ROYALEONLINE.COM</span></div>
+            <button class="user-btn"><i class="fa-solid fa-user"></i></button>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="page-header">
+            <div class="sub-title">MAĞAZA</div>
+            <h1 class="main-title">EUROPE MAĞAZASI</h1>
+            <div class="desc">Rütbeler, paketler ve daha fazlası. Satın aldığın ürün oyundaki hesabına otomatik teslim edilir.</div>
+            <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> > <a href="magaza.html">Mağaza</a> > <span>Europe</span></div>
+        </div>
+
+        <!-- Üst Araç Çubuğu -->
+        <div class="toolbar">
+            <div class="server-badge"><i class="fa-solid fa-server"></i> EUROPE</div>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Ürün ara...">
+            </div>
+            <div class="login-prompt">
+                <span>SATIN ALMAK İÇİN</span>
+                <button class="login-btn">Giriş Yapmalısın</button>
+            </div>
+        </div>
+
+        <!-- Kategoriler / Sekmeler -->
+        <div class="tabs">
+            <a href="#" class="tab active"><i class="fa-solid fa-th-large"></i> Tümü (6)</a>
+            <a href="#" class="tab"><i class="fa-solid fa-crown"></i> VIP PAKET (2)</a>
+            <a href="#" class="tab"><i class="fa-solid fa-cube"></i> SPAWNERLAR (3)</a>
+            <a href="#" class="tab"><i class="fa-solid fa-box"></i> DİĞER (1)</a>
+        </div>
+
+        <!-- Rütbeler / Karşılaştırma Alanı -->
+        <div class="section-box">
+            <div class="section-title"><i class="fa-solid fa-star"></i> KADEMELERİ KARŞILAŞTIR</div>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>ÖZELLİK</th>
+                        <th>VIP<br><span style="font-size:10px; color:#aaa;">30 gün</span></th>
+                        <th>VIP+<br><span style="font-size:10px; color:#aaa;">30 gün</span></th>
+                        <th>MVP<br><span style="font-size:10px; color:#aaa;">30 gün</span></th>
+                        <th>MVP+<br><span style="font-size:10px; color:#aaa;">30 gün</span></th>
+                        <th>SPONSOR<br><span style="font-size:10px; color:#aaa;">30 gün</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ev hakkı (/sethome)</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>İhale ilanı (aynı anda)</td>
+                        <td>10</td>
+                        <td>14</td>
+                        <td>20</td>
+                        <td>24</td>
+                        <td>36</td>
+                    </tr>
+                    <tr>
+                        <td>Market kurma (kendi arsasında)</td>
+                        <td>8</td>
+                        <td>10</td>
+                        <td>12</td>
+                        <td>14</td>
+                        <td>20</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">IP Adresi Kopyalandı!</div>
+    <script>
+        function copyIP() {
+            navigator.clipboard.writeText("PLAY.ROYALEONLINE.COM");
+            const toast = document.getElementById("toast");
+            toast.style.display = "block";
+            setTimeout(() => { toast.style.display = "none"; }, 2000);
+        }
+    </script>
+</body>
+</html>
